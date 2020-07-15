@@ -19,7 +19,7 @@ git clone (Clone with HTTPS/SSH key)
 * **Alan** - 
 * **Amin** - [Aminprvz](https://github.com/Aminprvz)
 * **Amir** - [Amirmadethis](https://github.com/amirmadethis)
-* **E.G. The Kid** - [r1gg3y](https://github.com/r1gg3y)
+* **E.G. The Kid** - 
 * **Isaac Guido** - [Aizeke](https://github.com/Aizeke)
-* **Nicholas Moc** -  
+* **Nicholas Moc** - [r1gg3y](https://github.com/r1gg3y)
 * **Sepehr** - [Sepehr1366](https://github.com/Sepehr1366)
