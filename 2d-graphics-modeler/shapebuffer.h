@@ -1,7 +1,5 @@
-
 #ifndef shapebuffer_h
 #define shapebuffer_h
-
 
 #include "vector.h"
 #include <QBrush>
@@ -79,12 +77,14 @@ private:
 
      int shapeID=0;
      ShapeType shape;
+
      QBrush brush;
      QPen pen;
 
      QPoint one,two;
      QRect qRect;
      QPolygon qPolygon;
+
 
      QFont font;
      QString qStringText;

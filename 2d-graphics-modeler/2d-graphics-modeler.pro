@@ -36,7 +36,11 @@ SOURCES += \
     polyline.cpp \
     rectangle.cpp \
     square.cpp \
-    text.cpp
+    text.cpp \
+    palette.cpp \
+    renderarea.cpp \
+    shapebuffer.cpp \
+    shapeinfo.cpp
 
 HEADERS += \
         mainwindow.h \
@@ -49,7 +53,15 @@ HEADERS += \
     polyline.h \
     rectangle.h \
     square.h \
-    text.h
+    text.h \
+    comp_func.h \
+    palette.h \
+    renderarea.h \
+    selection_sort.h \
+    shapebuffer.h \
+    shapeinfo.h \
+    ui_palette.h \
+    ui_shapeinfo.h
 
 FORMS += \
         mainwindow.ui
