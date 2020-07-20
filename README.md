@@ -16,7 +16,7 @@ git clone (Clone with HTTPS/SSH key)
 ## Authors
 
 * **Allison Chu** - [allison-chu](https://github.com/allison-chu)
-* **Alan** - 
+* **Alan** - [Dogtor-Hegcht](https://github.com/Dogtor-Hegcht)
 * **Amin** - [Aminprvz](https://github.com/Aminprvz)
 * **Amir** - [Amirmadethis](https://github.com/amirmadethis)
 * **E.G. The Kid** - 
