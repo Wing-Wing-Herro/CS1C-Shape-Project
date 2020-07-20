@@ -1,54 +1,64 @@
-v#include "Square.h"
+#include "square.h"
 
-Square::Square()
+Square::Square(const ShapeBuffer& arg): Shape(arg)
 {
-    side = 0;
-    x = 0;
-    y = 0;
-    setShape(SQUARE);
+    QRect qRect = arg.getQRect();
+    side = qRect.width();
+    side = qRect.height();
+
+    _x = qRect.x();
+    _y = qRect.y();
+    stringID = QString::number(arg.getShapeID());
 }
 
-Square::Square(ShapeBuffer s)
+void Square::setShapeBuffer(ShapeBuffer &temp)
 {
-    QPoint upperLeft = s.qRect.topLeft();
-    side = s.qRect.width();
-    x = upperLeft.x();
-    y = upperLeft.y();
-    setShape(SQUARE);
+    Shape::setShapeBuffer(temp);
+    temp.qRect.setRect(_x,_y,side,side);
 }
-
-void Square::draw(const int x, const int y)
+void Square::draw(const int, const int)
 {
-    getQPainter()->drawRect(x, y, side, side);
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+    getQPainter()->drawRect(_x,_y,side,side);
+    getQPainter()->end();
 }
 
 void Square::draw()
 {
-    getQPainter()->drawRect(this->x, this->y, side, side);
-}
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
 
-void Square::move(const int x,const int y)
-{
-    QPoint p(x, y);
-    getQPainter()->translate(p);
+    drawID();
+    getQPainter()->drawRect(_x,_y,side,side);
+    passQPainter(nullptr);
 }
 
 double Square::area() const
 {
-    return pow(2, side);
+    return side*side;
+}
+
+void Square::move(int x, int y)
+{
+  /* BOUNDARY CHECKING */
+  if (!(x + side > 1000 || y + side > 500))
+  {
+     _x = x;
+     _y = y;
+  }
 }
 
 double Square::perimeter() const
 {
-    return 4 * side;
+  return 4*side;
 }
 
-int Square::getX() const
+void Square::drawID()
 {
-    return x;
-}
+  /* testing purposes */
+  QString temp = QString::number (_x) + " " + QString::number (_y);
 
-int Square::getY() const
-{
-    return y;
+    const int VERTICAL_BUFFER = 5;
+    getQPainter()->drawText(_x, _y - VERTICAL_BUFFER, stringID);
 }
