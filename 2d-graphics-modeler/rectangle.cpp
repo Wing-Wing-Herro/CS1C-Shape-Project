@@ -17,11 +17,14 @@ Rectangle::Rectangle(int xC, int yC, int width, int length)
 Rectangle::Rectangle(ShapeBuffer sb)
     :Rectangle()
 {
+    setPen(sb.getPen());
+    setBrush(sb.getBrush());
     l = sb.qRect.height();
     w = sb.qRect.width();
     QPoint p = sb.qRect.topLeft();
     x1 = p.x();
     y1 = p.y();
+        
 }
 
 void Rectangle::draw()
