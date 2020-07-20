@@ -8,7 +8,7 @@
 #include <QFile>
 #include <QTextStream>
 
-enum ShapeType{LINE, POLYLINE, POLYGON, RECTANGLE,\
+enum ShapeType{LINE, POLYLINE, POLYGON, RECTANGLE,
                SQUARE, ELLIPSE, CIRCLE, TEXT};
 class MyException{};
 
