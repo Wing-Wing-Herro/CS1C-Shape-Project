@@ -8,8 +8,8 @@ class Rectangle : public Shape
 private:
     int l; //length
     int w; //width
-    int x;
-    int y;
+    int x1;
+    int y1;
 public:
     void draw();
     void move(const int, const int);
