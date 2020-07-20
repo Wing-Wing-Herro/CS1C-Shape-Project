@@ -1,39 +1,77 @@
 #include "line.h"
+#include <cmath>
 
-Line::Line()
+Line::Line(const ShapeBuffer& buffer): Shape(buffer)
 {
-    setShape(LINE);
+    //Sanity Check here
+    if(buffer.getShape()==LINE)
+    {
+        one = buffer.getQPointOne();
+        two = buffer.getQPointTwo();
+        stringID = QString::number(buffer.getShapeID());
+    }
+    else {
+        //should throw an exception here
+    }
 }
 
-Line::Line(int xOne, int xTwo, int yOne, int yTwo)
-    :Line()
+Line::~Line()
+
 {
-    x1 = xOne;
-    x2 = xTwo;
-    y1 = yOne;
-    y2 = yTwo;
+
 }
 
-Line::Line(ShapeBuffer sb)
-    :Line()
+void Line::setShapeBuffer(ShapeBuffer & temp)
 {
-    setPen(sb.getPen());
-    setBrush(sb.getBrush());
-    x1 = sb.one.x();
-    x2 = sb.two.x();
-    y1 = sb.one.y();
-    y2 = sb.two.y();
+    Shape::setShapeBuffer(temp);
+    temp.one = one;
+    temp.two = two;
+}
+
+QPoint Line::getQPointOne() const
+{
+    return one;
+}
+
+QPoint Line::getQPointTwo() const
+{
+ return two;
+}
+
+void Line::draw(const int, const int)
+{
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+    getQPainter()->drawLine(one,two);
 }
 
 void Line::draw()
 {
-    getQPainter()->drawLine(x1,y1,x2,y2);
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+    drawID();
+    getQPainter()->drawLine(one,two);
+    passQPainter(nullptr);
 }
 
-void Line::move(const int x, const int y)
+void Line::move(int x, int y)
 {
-    QPoint p(x,y);
-    getQPainter()->translate(p);
+    QPoint offset (two-one);
+    QPoint tempOne(QPoint(x,y));
+    QPoint tempTwo(QPoint(x,y)+offset);
+    if(tempOne.x()<1000 &&tempOne.y()<500 && tempTwo.x()<1000 && tempTwo.y()<500)
+    {
+        one = tempOne;
+        two = tempOne+offset;
+    }
+}
+
+int Line::getX() const {
+    return one.x();
+}
+
+int Line::getY() const {
+    return one.y();
 }
 
 double Line::area() const
@@ -43,8 +81,18 @@ double Line::area() const
 
 double Line::perimeter() const
 {
-    return sqrt(pow(2,((double)x2 - (double)x1)) + pow(2,((double)y2 - (double)y1)));
+    return sqrt(QPoint::dotProduct(one,two));
 }
 
+void Line::drawID()
+{
+    //! Int variables that hold the coordinates for left most point of the object
+    int leftmostPoint;  /*! < leftmostpoint holds the x- axis value*/
+    int upmostPoint;    /*! < upmostPoint holds the y- axis value*/
 
+    const int VERTICAL_BUFFER = 5; /*! <Vertical Buffer for Drawing ID*/
 
+    one.rx() < two.rx()? leftmostPoint = one.rx() : leftmostPoint = two.rx();
+    one.ry() < two.ry()? upmostPoint = one.ry() : upmostPoint = two.ry();
+    getQPainter()->drawText(leftmostPoint, upmostPoint - VERTICAL_BUFFER, stringID);
+}
