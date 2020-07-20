@@ -1,53 +1,73 @@
 #include "rectangle.h"
 
-Rectangle::Rectangle()
+Rectangle::Rectangle (const ShapeBuffer& arg) :\
+    Shape (arg)
 {
-    setShape(RECTANGLE);
+  /*testing purposes: ASSIGN DIMENSIONS FROM SHAPEBUFFER OBJECT TO INTERNAL QRECT*/
+  xyWH = arg.getQRect ();
+
+  /*ASSIGN DIMENSIONS FROM SHAPEBUFFER OBJECT TO INTERNAL VARIABLES*/
+  x = xyWH.x();
+  y = xyWH.y();
+  width = xyWH.width();
+  height = xyWH.height();
+
+  stringID = QString::number(arg.getShapeID());
 }
 
-Rectangle::Rectangle(int xC, int yC, int width, int length)
-    :Rectangle()
+Rectangle::~Rectangle () {}
+
+void Rectangle::setShapeBuffer(ShapeBuffer &temp)
 {
-    w = width;
-    l = length;
-    x1 = xC;
-    y1 = yC;
+    Shape::setShapeBuffer(temp);
+    temp.qRect.setRect(x,y,width,height);
 }
 
-Rectangle::Rectangle(ShapeBuffer sb)
-    :Rectangle()
+double Rectangle::area () const
 {
-    setPen(sb.getPen());
-    setBrush(sb.getBrush());
-    l = sb.qRect.height();
-    w = sb.qRect.width();
-    QPoint p = sb.qRect.topLeft();
-    x1 = p.x();
-    y1 = p.y();
-        
+    return height * width;
+}
+
+double Rectangle::perimeter () const
+{
+  return (2*height) + (2*width);
+}
+
+void Rectangle::draw (int x, int y)
+{
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+
+    /* DRAW SHAPE BASED ON INTERNAL PRIVATE VARIABLES */
+    getQPainter()->drawRect (x,y,width,height);
 }
 
 void Rectangle::draw()
 {
-    getQPainter()->drawRect(x1,y1,w,l);
-}
+  getQPainter()->setPen(getPen());
+  getQPainter()->setBrush(getBrush());
 
-void Rectangle::move(const int x, const int y)
+  /* DRAW SHAPE BASED ON INTERNAL VARIABLES */
+   drawID();
+   getQPainter()->drawRect (x, y, width, height);
+   passQPainter(nullptr);
+ }
+
+void Rectangle::move (int px, int py)
 {
-    QPoint p(x,y);
-    getQPainter()->translate(p);
+  /* BOUNDARY CHECKING */
+  if (!(px + width > 1000 || py + height > 500))
+  {
+      x = px;
+      y = py;
+  }
 }
 
-double Rectangle::area() const
+void Rectangle::drawID()
 {
-    return (double)l * (double)w;
+  /* testing purposes */
+  QString temp = QString::number (x) + " " + QString::number (y);
+
+    const int VERTICAL_BUFFER = 5;
+    getQPainter()->drawText(x, y - VERTICAL_BUFFER, stringID);
 }
-
-double Rectangle::perimeter() const
-{
-    return (double)(l * 2) + (double)(w * 2);
-}
-
-
-
-
