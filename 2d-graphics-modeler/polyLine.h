@@ -19,7 +19,7 @@ public:
     //!   PolyLine Class Copy Constructor
     /*!   Copy Constructor for the Polyline object.
     *     Parameter is passed by const ref.
-    *     \param &arg is a ShapeBuffer object
+    *     \ &arg is a ShapeBuffer object
     */
     PolyLine(const ShapeBuffer& arg);
 
