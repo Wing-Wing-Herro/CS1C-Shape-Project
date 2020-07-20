@@ -10,8 +10,8 @@ Rectangle::Rectangle(int xC, int yC, int width, int length)
 {
     w = width;
     l = length;
-    x = xC;
-    y = yC;
+    x1 = xC;
+    y1 = yC;
 }
 
 Rectangle::Rectangle(ShapeBuffer sb)
@@ -20,13 +20,13 @@ Rectangle::Rectangle(ShapeBuffer sb)
     l = sb.qRect.height();
     w = sb.qRect.width();
     QPoint p = sb.qRect.topLeft();
-    x = p.x();
-    y = p.y();
+    x1 = p.x();
+    y1 = p.y();
 }
 
 void Rectangle::draw()
 {
-    getQPainter()->drawRect(x,y,w,l);
+    getQPainter()->drawRect(x1,y1,w,l);
 }
 
 void Rectangle::move(const int x, const int y)
