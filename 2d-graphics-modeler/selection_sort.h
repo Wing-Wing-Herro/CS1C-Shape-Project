@@ -1,10 +1,4 @@
-//
-//  selection_sort.h
-//  2dproject
-//
-//  Created by Amin Parvizi on 7/16/20.
-//  Copyright © 2020 Amin Parvizi. All rights reserved.
-//
+
 
 #ifndef selection_sort_h
 #define selection_sort_h
