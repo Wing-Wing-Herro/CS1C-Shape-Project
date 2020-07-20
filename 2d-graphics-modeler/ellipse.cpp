@@ -1,117 +1,73 @@
-#ifndef ELLIPSE_H
-#define ELLIPSE_H
-#include "shape.h"
+#include "ellipse.h"
+#include <QtMath>
 
-//!    Derived Class From Base Shape Class
-/*!   Ellipse is a derived class of the shape class.\n
-*     Takes integer values to form dimensions of the ellipse.\n
-*     Ellipse can be styled with different pens, colors, and brushes.
-*/
-class Ellipse : public Shape
+Ellipse::Ellipse(const ShapeBuffer& arg): Shape(arg)
 {
-public:
-      //!Default ellipse class constructor
-     /*!Function calls default base class constructor
-     * Base Class Constructor calls setShape() and assigns
-     * enum value of ELLIPSE- passes object to a rectangle object.
-     */
-    Ellipse():Shape(),myRect(G_DEFAULTQRECT), radius1(100), radius2(200), x(100), y(100) {setShape(ELLIPSE);}
+  /*ASSIGNING DIMENSIONS FROM SHAPEBUFFER OBJECT TO INTERNAL QRECT*/
+  myRect = arg.getQRect();
 
-    //!Ellipse overloaded class constructor
-    /*!Function calls default base class constructor
-    * Base Class Constructor calls setShape() and assigns
-    * enum value of ELLIPSE- passes object to a rectangle object.
-    * \param radius1 holds the height value of the object
-    * \param radius2 holds the width value of the object
-    * \param x holds the x-value of the coordinate of the object
-    * \param y holds the y-value of the coordinate of the object
-    */
-    Ellipse(int radius1, int radius2, int x, int y) : Shape(), myRect(G_DEFAULTQRECT), radius1(radius1), radius2(radius2), x(x), y(y) { setShape(ELLIPSE);}
-    //!   Ellipse Class Copy Constructor
-    /*!   Copy Constructor for the ellipse object
-    *     paramater passed by const ref. to the ellipse object.
-    *     \param &arg is a ShapeBuffer object
-    */
-    Ellipse(const ShapeBuffer&);
+  /*ASSIGNING DIMENSIONS TO INTERNAL VARIABLES*/
+  x = myRect.x();
+  y = myRect.y();
+  radius1 = myRect.width();
+  radius2 = myRect.height();
 
-    //!  Virtual Ellipse Class Destructor
-    ~Ellipse() override {}
+  stringID = QString::number (arg.getShapeID());
+}
 
+void Ellipse::setShapeBuffer(ShapeBuffer & temp)
+{
+    Shape::setShapeBuffer(temp);
+    temp.qRect = myRect;
+}
 
-    //this function has no definition- only a prototype
-    /*void setDimension(int x, int y, int r1, int r2);*/
+void Ellipse::draw(const int, const int)
+{
+  getQPainter()->setPen(getPen());
+  getQPainter()->setBrush(getBrush());
 
-    //!   Function that draws an Ellipse
-    /*!   Sets the QPainter objects pen
-    *     Sets the QPainter objects brush
-    *     Sets the QPainter coordinates from which to draw an ellipse
-    *     \param x is the left-most coordinate of the object
-    *     \param y is the up-most coordinate of the object
-    */
-    void draw(const int x, const int y) override;
+  /*DRAW USING INTERNAL QRECT*/
+  drawID ();
+  getQPainter()->drawEllipse(myRect);
+  passQPainter(nullptr);
+}
 
-    //!   Function that draws an Ellipse
-    /*!   Sets the QPainter objects pen
-    *     Sets the QPainter objects brush
-    *     Sets the QPainter coordinates from which to draw an ellipse
-    *     calls the drawID function - which assigns an ID #
-    *     calls passQPainter function and passes a nullptr
-    */
-    void draw()override;
+void Ellipse::draw()
+{
+  getQPainter()->setPen(getPen());
+  getQPainter()->setBrush(getBrush());
 
-    //!   Function that moves an Ellipse
-    /*!   Checks to make sure that the new coordinates that are
-    *     passed as parameters does not force the object off the screen.
-    *     If it passes the logic check, the passed parameters are saved
-    *     as new values
-    *     \param x is the x-axis value of the top left corner of the object
-    *     \param y is the y-axis value of the top left corner of the object
-    */
-    void move(const int x, const int y) override;
+  /*DRAW USING INTERNAL VARIABLES*/
+  drawID ();
+  getQPainter()->drawEllipse(x, y, radius1, radius2);
+  passQPainter(nullptr);
+}
 
-    //!Function that returns the area of an ellipse
-    /*! Returns a double value of pi_val * radius1 * radius2
-    */
-    double area() const override;
+void Ellipse::move(const int x, const int y)
+{
+    if(radius1 + x < 1000 && radius1 + y < 500 &&\
+       radius2 + x < 1000 && radius2 + y < 500 )
+    {
+        this -> x = x;
+        this -> y = y;
+    }
+}
 
-    //!Function that returns the perimeter of an ellipse
-    /*! Returns a double value of the perimeter of the ellipse object
-    */
-    double perimeter() const override;
+double Ellipse::perimeter() const
+{
+    return M_PI * ((3 *(radius1 + radius2)) - sqrt((3*radius1 + radius2)*(radius1 + (3 * radius2))));
+}
 
-    //!Function to find the top left corner of an object
-    /*!Finds the top - left corner of an object, and assigns
-    * an integer value to the object that displays on screen.
-    */
-    void drawID();
+double Ellipse::area() const
+{
+    return M_PI * radius1 * radius2;
+}
 
-    //!   Setter Function that sets the ShapeBuffer to a Ellipse object
-    /*!   function that is passed a ShapeBuffer Object by reference
-    *     \param temp sets the new Rectangle objects values used in creation of ellipse
-    */
-    void setShapeBuffer (ShapeBuffer&);
+void Ellipse::drawID()
+{
+  /* testing purposes */
+  QString temp = QString::number (x) + " " + QString::number (y);
 
-    //!Function that returns the x value
-    int getX() const override { return x; }
-
-    //!Function that returns the y value
-    int getY() const override { return y; }
-protected:
-      //! A variable of type int, holds the width of the object
-    int radius1;
-    //! A variable of type int, holds the height of the object
-    int radius2;
-    //! A variable of type int, holds the left-most x value
-    int x;
-    //! A variable of type int, holds the up-most y value
-    int y;
-    //! A variable of type QRect
-    /*! Rectangle object used to set the private variables of
-    *   the ellipse class
-    */
-    QRect myRect;
-    //! A variable of type QString, used for displaying Id on screen in drawId()
-    QString stringID;
-};
-
-#endif // ELLIPSE_H
+  const int VERTICAL_BUFFER = 5;
+  getQPainter()->drawText(x, y - VERTICAL_BUFFER, stringID);
+}
