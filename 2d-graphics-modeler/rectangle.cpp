@@ -37,12 +37,12 @@ void Rectangle::move(const int x, const int y)
 
 double Rectangle::area() const
 {
-    return l * w;
+    return (double)l * (double)w;
 }
 
 double Rectangle::perimeter() const
 {
-    return (l * 2) + (w * 2);
+    return (double)(l * 2) + (double)(w * 2);
 }
 
 
