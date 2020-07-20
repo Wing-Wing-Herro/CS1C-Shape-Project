@@ -1,52 +1,74 @@
-#include "adminlogin.h"
-#include "ui_adminlogin.h"
-#include "QMessageBox"
-#include "mainwindow.h"
-#include <QPixmap>
+#include "text.h"
 
-adminLogin::adminLogin(QWidget *parent) :
-    QDialog(parent),
-    ui(new Ui::adminLogin)
-{
-    ui->setupUi(this);
-    setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-    QPixmap logo(":/img/img/logo.png");
-    ui -> Logo -> setPixmap(logo.scaled(ui -> Logo -> width(), ui -> Logo -> height(), Qt::KeepAspectRatio));
-    ui -> Username -> setEnabled(false);
-    ui -> Password -> setEnabled(false);
+// just need the qrect for the constructor: x, y, height, width
+Text::Text(const ShapeBuffer& arg) : Shape(arg) {
+      myRect = arg.getQRect();
+
+      x = myRect.x();
+      y = myRect.y();
+      wide = myRect.width();
+      tall = myRect.height();
+      alignFlag = arg.getAlignFlag();
+      myQString = arg.getQStringText();
+      font = arg.getQFont();
+
 }
 
-adminLogin::~adminLogin()
+void Text::setShapeBuffer(ShapeBuffer &temp)
 {
-    delete ui;
+    Shape::setShapeBuffer(temp);
+    temp.alignFlag=alignFlag;
+    temp.qStringText=myQString;
+    temp.font = font;
+    temp.qRect = myRect;
 }
 
-void adminLogin::on_loginButton_clicked()
-{
-    QString username = ui -> Username -> text();
-    QString password = ui -> Password -> text();
+void Text::draw(const int, const int){
 
-    if(username == "Admin" && password == "Admin")
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+    getQPainter()->setFont(font);
+    getQPainter()->drawText(myRect,alignFlag,myQString);
+}
+
+void Text::draw(){
+
+    getQPainter()->setPen(getPen());
+    getQPainter()->setBrush(getBrush());
+    getQPainter()->setFont(font);
+    getQPainter()->drawText(myRect,alignFlag,myQString);
+
+    QString temp = QString::number (x) + " " + QString::number (y);
+    getQPainter()->drawText(myRect.x(), myRect.y() - 5, QVariant(Shape::getID()).toString());
+    passQPainter(nullptr);
+}
+
+void Text::move(const int x1, const int y1) {
+      const int MAXX = 1000;    //largest x-axis value to remain on screen
+      const int MAXY = 500;     //largest y-axis value to remain on screen
+
+//          if (wide + x1 < MAXX && wide + y1 < MAXY && tall + x1 < MAXX && tall + y1 < MAXY ) {
+//              x = x1;
+//              y = y1;
+//              //draw(x, y)?
+//          }
+    /* BOUNDARY CHECKING */
+    if (!(x1 + wide > MAXX || y1 + tall > MAXY))
     {
-        QMessageBox::information(this, "Login", "Welcome back, Admin!");
-        close();
-        MainWindow* w = dynamic_cast<MainWindow*>(this->parentWidget());
-        w->renderArea->enableAdmin();
+        myRect.moveTo(x1,y1);
     }
-    else
-    {
-        QMessageBox::warning(this, "Login", "Username or Password you've entered is incorrect!");
-    }
+
 }
 
-void adminLogin::mousePressEvent(QMouseEvent *e)
-{
-    if(e->buttons() == Qt::LeftButton)
-    {
-        ui -> usernameLabel -> hide();
-        ui -> passwordLabel -> hide();
-        ui -> Username -> setEnabled(true);
-        ui -> Password -> setEnabled(true);
-        ui -> Username -> setFocus();
-    }
+double Text::area () const {
+
+      return (wide * tall);
 }
+
+double Text::perimeter() const {
+
+      return (2 * (wide + tall));
+}
+
+Text::~Text(){}
+
