@@ -18,6 +18,7 @@ Line::Line(ShapeBuffer sb)
     :Line()
 {
     setPen(sb.getPen());
+    setBrush(sb.getBrush());
     x1 = sb.one.x();
     x2 = sb.two.x();
     y1 = sb.one.y();
