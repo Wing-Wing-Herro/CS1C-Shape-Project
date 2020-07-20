@@ -17,6 +17,7 @@ Line::Line(int xOne, int xTwo, int yOne, int yTwo)
 Line::Line(ShapeBuffer sb)
     :Line()
 {
+    setPen(sb.getPen());
     x1 = sb.one.x();
     x2 = sb.two.x();
     y1 = sb.one.y();
