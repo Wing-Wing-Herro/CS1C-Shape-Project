@@ -92,3 +92,4 @@ private:
     int _y;
     //! A variable of type QString, used for testing purposes in drawId()
     QString stringID;
+};
