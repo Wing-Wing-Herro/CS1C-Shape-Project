@@ -1,5 +1,4 @@
 #include "adminlogin.h"
-#include "ui_adminlogin.h"
 #include "QMessageBox"
 #include "mainwindow.h"
 #include <QPixmap>
@@ -10,8 +9,6 @@ adminLogin::adminLogin(QWidget *parent) :
 {
     ui->setupUi(this);
     setWindowFlags(Qt::Dialog | Qt::MSWindowsFixedSizeDialogHint);
-    QPixmap logo(":/img/img/logo.png");
-    ui -> Logo -> setPixmap(logo.scaled(ui -> Logo -> width(), ui -> Logo -> height(), Qt::KeepAspectRatio));
     ui -> Username -> setEnabled(false);
     ui -> Password -> setEnabled(false);
 }
