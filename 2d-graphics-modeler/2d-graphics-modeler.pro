@@ -64,7 +64,8 @@ HEADERS += \
     ui_shapeinfo.h
 
 FORMS += \
-        mainwindow.ui
+        mainwindow.ui \
+    palette.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
