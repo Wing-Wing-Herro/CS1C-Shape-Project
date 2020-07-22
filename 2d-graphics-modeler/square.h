@@ -3,6 +3,8 @@
 *     Takes integer values to form dimensions of the square.\n
 *     Square can be styled with different pens, colors, and brushes.
 */
+#include "shape.h"
+
 class Square: public Shape
 {
 public:
